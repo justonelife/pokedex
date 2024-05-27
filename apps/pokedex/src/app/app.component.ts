@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { LibNavComponent } from '@pokedex/core';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
+  imports: [RouterModule, LibNavComponent],
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  template: `
+    <lib-nav class="bg-red-500">
+      <img class="h-[50px]"
+       src="assets/images/pokedex.png" />
+    </lib-nav>
+    <router-outlet></router-outlet>
+  `,
 })
-export class AppComponent {
-  title = 'pokedex';
-}
+export class AppComponent {}

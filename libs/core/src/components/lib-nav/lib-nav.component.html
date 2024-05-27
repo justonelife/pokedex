@@ -1,0 +1,8 @@
+<nav class="w-full py-2 px-8 flex justify-between">
+  <ng-content></ng-content>
+  @if (responsiveScreenService.isMobile()) {
+    mobile
+  } @else {
+    desktop
+  }
+</nav>
