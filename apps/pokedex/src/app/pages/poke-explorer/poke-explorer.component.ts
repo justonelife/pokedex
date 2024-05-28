@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from "@angular/core";
-import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
-import { LibPokeListComponent, LibPokeTypeSelectComponent } from "@pokedex/core";
-import { DropdownModule } from 'primeng/dropdown';
-import { ButtonModule } from 'primeng/button';
-import { ORDER, SORT_BY } from "./poke-explore.consts";
-import { distinctUntilChanged, Subject, switchMap } from "rxjs";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { PokeService } from "libs/core/src/services/poke.service";
 import { AsyncPipe } from "@angular/common";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, inject } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
+import { LibPokeListComponent, LibPokeTypeSelectComponent, LibSpinnerDirective } from "@pokedex/core";
+import { PokeService } from "libs/core/src/services/poke.service";
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { catchError, finalize, of, Subject, switchMap } from "rxjs";
+import { ORDER, SORT_BY } from "./poke-explore.consts";
 
 @Component({
   selector: 'poke-explorer',
@@ -20,12 +20,14 @@ import { AsyncPipe } from "@angular/common";
     ButtonModule,
     LibPokeTypeSelectComponent,
     AsyncPipe,
+    LibSpinnerDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PokeExplorerComponent {
   private readonly destroy = inject(DestroyRef);
   private readonly pokeService = inject(PokeService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   filterForm: FormGroup = new FormGroup({
     sort: new FormControl('number'),
@@ -41,11 +43,24 @@ export class PokeExplorerComponent {
     type: string
   }>();
 
+  loading: boolean = false;
   vm$ = this.submitFilterValue$.pipe(
-    distinctUntilChanged((prev, cur) => JSON.stringify(prev) === JSON.stringify(cur)),
     takeUntilDestroyed(this.destroy),
     switchMap(({ sortBy, type }) => {
+      this.loading = true;
+      this.cdr.markForCheck();
+
       return this.pokeService.getPokemons(sortBy, type, 0, 10)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.cdr.markForCheck();
+          }),
+          catchError((err) => {
+            console.error(err);
+            return of([]);
+          }),
+        )
     }),
   );
 
