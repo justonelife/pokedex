@@ -10,7 +10,7 @@ export class ResponsiveScreenService {
   screenWidth: WritableSignal<number> = signal(window.innerWidth);
 
   isMobile: Signal<boolean> = computed(() => {
-    return this.screenWidth() <= Checkpoints.SM;
+    return this.screenWidth() <= Checkpoints.XS;
   })
 
   constructor() {
