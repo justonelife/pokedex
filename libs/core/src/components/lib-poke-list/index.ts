@@ -1,0 +1,1 @@
+export * from './lib-poke-list.component';

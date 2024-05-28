@@ -3,4 +3,4 @@ export const Checkpoints = {
   'SM': 768,
   'MD': 992,
   'LG': 1200,
-};
+} as const;

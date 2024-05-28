@@ -51,7 +51,8 @@
           "buildTarget": "pokedex:build:production"
         },
         "development": {
-          "buildTarget": "pokedex:build:development"
+          "buildTarget": "pokedex:build:development",
+          "port": 4300
         }
       },
       "defaultConfiguration": "development"
