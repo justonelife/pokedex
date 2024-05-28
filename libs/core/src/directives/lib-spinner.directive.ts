@@ -1,10 +1,10 @@
-import { Directive, ElementRef, HostListener, inject, Input, Renderer2 } from "@angular/core";
+import { Directive, DoCheck, ElementRef, inject, Input, Renderer2 } from "@angular/core";
 
 @Directive({
   selector: '[libSpinner]',
   standalone: true,
 })
-export class LibSpinnerDirective {
+export class LibSpinnerDirective implements DoCheck {
   private readonly elementRef = inject(ElementRef);
   private readonly renderer = inject(Renderer2);
 
@@ -12,7 +12,7 @@ export class LibSpinnerDirective {
     if (!this.spinnerEl) {
       this.initLoading();
     }
-    
+
     if (v) {
       this.showLoading();
     } else {
@@ -20,12 +20,16 @@ export class LibSpinnerDirective {
     }
   }
 
-  @HostListener("document:scroll")
-  onScroll(): void {
-    this.renderer.setStyle(this.spinnerEl, 'height', this.computeSpinnerHeight() + 'px');
-  }
-
   private spinnerEl!: HTMLElement;
+
+  ngDoCheck(): void {
+    try {
+      const height = this.computeSpinnerHeight();
+      if (parseFloat(this.spinnerEl?.style?.height) !== height) {
+        this.renderer.setStyle(this.spinnerEl, 'height', this.computeSpinnerHeight() + 'px');
+      }
+    } catch {}
+  }
 
   private initLoading(): void {
     const spinIcon = this.renderer.createElement('i');
@@ -63,7 +67,7 @@ export class LibSpinnerDirective {
   private computeSpinnerHeight(): number {
     const screenHeight = screen.height;
     const { top: fromTop, bottom: fromBottom } = (this.elementRef.nativeElement as HTMLElement).getBoundingClientRect();
-    
+    // debugger
     if (fromTop < 0 && fromBottom >= screenHeight) {
       return screenHeight;
     } else if (fromBottom >= screenHeight) {
@@ -75,13 +79,11 @@ export class LibSpinnerDirective {
   }
 
   private showLoading(): void {
-    this.addKlasses(this.elementRef.nativeElement, 'relative');
     this.removeKlasses(this.spinnerEl, 'hidden');
     this.addKlasses(this.spinnerEl, 'flex');
   }
 
   private hideLoading(): void {
-    this.removeKlasses(this.elementRef.nativeElement, 'relative');
     this.removeKlasses(this.spinnerEl, 'flex');
     this.addKlasses(this.spinnerEl, 'hidden');
   }
