@@ -1,6 +1,8 @@
 import { JsonPipe, NgTemplateOutlet } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { IPokemon, LazyLoadImageDirective, LibPokeTypeBadgeComponent } from "@pokedex/core";
+import { LazyLoadImageDirective } from "../../directives";
+import { LibPokeTypeBadgeComponent } from "../lib-poke-type-badge";
+import { IPokemon } from "../../interfaces";
 
 @Component({
   selector: 'lib-poke-list',

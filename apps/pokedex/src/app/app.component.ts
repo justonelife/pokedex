@@ -2,8 +2,6 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LibNavComponent } from '@pokedex/core';
 import { APP_MENU } from './app.consts';
-import { PokeService } from 'libs/core/src/services/poke.service';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
