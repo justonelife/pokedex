@@ -1,6 +1,6 @@
-import { JsonPipe } from "@angular/common";
+import { JsonPipe, NgTemplateOutlet } from "@angular/common";
 import { ChangeDetectionStrategy, Component, Input } from "@angular/core";
-import { IPokemon } from "../../interfaces";
+import { IPokemon, LazyLoadImageDirective, LibPokeTypeBadgeComponent } from "@pokedex/core";
 
 @Component({
   selector: 'lib-poke-list',
@@ -8,6 +8,9 @@ import { IPokemon } from "../../interfaces";
   standalone: true,
   imports: [
     JsonPipe,
+    LazyLoadImageDirective,
+    LibPokeTypeBadgeComponent,
+    NgTemplateOutlet,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,0 +1,1 @@
+export * from './lib-poke-type-badge.component';

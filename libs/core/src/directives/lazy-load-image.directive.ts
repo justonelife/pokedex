@@ -10,7 +10,14 @@ export class LazyLoadImageDirective implements OnInit {
   private readonly destroy = inject(DestroyRef);
   private readonly elementRef = inject(ElementRef);
 
-  @Input({ alias: 'lazySrc', required: true }) imgSrc!: string;
+  imgSrc!: string;
+  enterViewport: boolean = false;
+  @Input({ alias: 'lazySrc', required: true }) set lazySrc(v: string) {
+    this.imgSrc = v;
+    if (this.enterViewport) {
+      this.setImage(this.elementRef.nativeElement, this.imgSrc);
+    }
+  }
   @Input() rootMargin?: string;
 
   private observer!: IntersectionObserver;
@@ -41,6 +48,7 @@ export class LazyLoadImageDirective implements OnInit {
       .pipe(
         distinctUntilChanged(),
         tap((value) => {
+          this.enterViewport = true;
           this.setImage(value as any, this.imgSrc);
         }),
         takeUntilDestroyed(this.destroy)

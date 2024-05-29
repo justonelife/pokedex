@@ -46,7 +46,7 @@ export class LibSpinnerDirective implements DoCheck {
     this.addKlasses(spinIcon, 'pi', 'pi-spin', 'pi-spinner');
 
     this.spinnerEl = this.renderer.createElement('span');
-    this.addKlasses(this.spinnerEl, 'absolute', 'w-full', 'bg-black/20', 'items-center', 'justify-center');
+    this.addKlasses(this.spinnerEl, 'absolute', 'max-h-full', 'w-full', 'bg-black/20', 'items-center', 'justify-center');
 
     this.renderer.setStyle(this.spinnerEl, 'height', this.computeSpinnerHeight() + 'px');
 
