@@ -27,8 +27,8 @@ export class PokeService {
     return this.httpClient.get<IPokemon[]>(this.URL + 'pokemons', { 
       params: {
         sort,
-        page,
-        size: pageSize,
+        'page[number]': page,
+        'page[size]': pageSize,
         'filter[type]': type ? type : ''
       }
     }).pipe(

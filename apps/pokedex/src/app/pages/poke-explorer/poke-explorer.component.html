@@ -45,10 +45,16 @@
         </button>
       </div>
     </form>
-    <div class="bg-white shadow col-span-9 p-2 rounded">
+    <div class="bg-white shadow col-span-9 p-2 rounded"
+      infiniteScroll
+      [infiniteScrollThrottle]="400"
+      [infiniteScrollDistance]="0"
+      (scrolled)="onScroll()">
       <lib-poke-list [data]="vm$ | async"
         [libSpinner]="loading">
       </lib-poke-list>
     </div>
   </div>
 </section>
+
+<p-scrollTop />
