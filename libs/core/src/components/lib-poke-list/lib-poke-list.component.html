@@ -1,6 +1,6 @@
 <section class="h-full p-4">
   @if (data?.length) {
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid md:grid-cols-4 grid-cols-1 gap-4">
       @for (pokemon of data; track $index) {
         <ng-container *ngTemplateOutlet="preview; context: { $implicit: pokemon }"></ng-container>
       }
@@ -15,7 +15,8 @@
 </section>
 
 <ng-template #preview let-data>
-  <div class="flex flex-col gap-1 items-center p-2 rounded border shadow cursor-pointer">
+  <div class="flex flex-col gap-1 items-center p-2 rounded border shadow cursor-pointer"
+    (click)="openDetail(data)">
     <img [lazySrc]="'https://api.vandvietnam.com/api/pokemon-api/pokemons/' + data.id + '/sprite'" 
       [alt]="data.name">
     <p class="text-center">{{ data.name }}</p>

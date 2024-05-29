@@ -1,9 +1,9 @@
 <section class="w-full p-2">
   <h1 class="font-bold mb-2 w-full text-slate-500 text-lg">Poke Explorer</h1>
-  <div class="grid grid-cols-12 gap-4">
+  <div class="md:grid md:grid-cols-12 gap-4 flex flex-col">
     <form [formGroup]="filterForm"
       (ngSubmit)="onSubmit()" 
-      class="mb-4 bg-white rounded col-span-3 shadow p-4 sticky top-[20px] h-fit">
+      class="mb-4 bg-white rounded col-span-3 shadow p-4 md:sticky top-[20px] h-fit">
       <h2 class="mb-2 font-semibold">Filters</h2>
 
       <lib-poke-type-select class="block mb-4" formControlName="type"></lib-poke-type-select>

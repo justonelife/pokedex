@@ -1,0 +1,32 @@
+@if (data) {
+  <div class="flex flex-col gap-4 items-center p-4 relative">
+    <span class="px-4 py-1 absolute top-0 start-0 bg-purple-700 text-white text-xs">Gen {{ data.generation }}</span>
+    @if (data.legendary) {
+      <span class="px-4 py-1 absolute top-0 end-0 bg-yellow-500 text-white text-xs">Legendary</span>
+    }
+
+    <img [src]="'https://api.vandvietnam.com/api/pokemon-api/pokemons/' + data.id + '/sprite'" 
+      [alt]="data.name"
+      class="h-[200px]">
+    <p class="text-center">{{ data.name }}</p>
+    <div class="flex gap-2">
+      @if (data.type_1) {
+        <lib-poke-type-badge [pokeType]="data.type_1"></lib-poke-type-badge>
+      }
+      @if (data.type_2) {
+        <lib-poke-type-badge [pokeType]="data.type_2"></lib-poke-type-badge>
+      }
+    </div>
+
+    <p-chart type="radar" [data]="stats" [options]="options" />
+
+    @if (dialogRef) {
+      <button pButton
+        class="p-button-sm mt-4"
+        label="Close"
+        type="button"
+        (click)="dialogRef.close()">
+      </button>
+    }
+  </div>
+}

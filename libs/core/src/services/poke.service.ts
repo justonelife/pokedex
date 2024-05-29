@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { IPokemon, PokeType } from "../interfaces";
-import { map, Observable, shareReplay } from "rxjs";
+import { map, Observable, retry, shareReplay } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 
 @Injectable({ providedIn: 'root' })
@@ -17,6 +17,10 @@ export class PokeService {
         .pipe(
           map((raw: any) => raw.data),
           shareReplay(1),
+          retry({
+            count: 3,
+            delay: 10_000
+          }),
         );
     }
 

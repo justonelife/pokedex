@@ -1,10 +1,6 @@
-<nav class="w-full py-2 px-16 grid grid-cols-2 items-center">
+<nav class="w-full py-2 px-8 grid grid-cols-2 items-center">
   <ng-content></ng-content>
   @if (items) {
-    @if (responsiveScreenService.isMobile()) {
-      mobile
-    } @else {
-      <p-menubar [model]="items" styleClass="!p-0 !bg-transparent !border-transparent"></p-menubar>
-    }
+    <p-menubar [model]="items" styleClass="!p-0 !bg-transparent !border-transparent"></p-menubar>
   }
 </nav>
