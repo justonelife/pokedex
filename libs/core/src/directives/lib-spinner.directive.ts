@@ -1,4 +1,4 @@
-import { Directive, DoCheck, ElementRef, inject, Input, Renderer2 } from "@angular/core";
+import { Directive, DoCheck, ElementRef, HostListener, inject, Input, Renderer2 } from "@angular/core";
 
 @Directive({
   selector: '[libSpinner]',
@@ -20,13 +20,23 @@ export class LibSpinnerDirective implements DoCheck {
     }
   }
 
+  @HostListener('document:scroll')
+  onScroll(): void {
+    const top = this.elementRef.nativeElement.getBoundingClientRect().top;
+    if (top <= 0) {
+      this.renderer.setStyle(this.spinnerEl, 'top', -top + 'px');
+    } else {
+      this.renderer.setStyle(this.spinnerEl, 'top', 0);
+    }
+  }
+
   private spinnerEl!: HTMLElement;
 
   ngDoCheck(): void {
     try {
       const height = this.computeSpinnerHeight();
       if (parseFloat(this.spinnerEl?.style?.height) !== height) {
-        this.renderer.setStyle(this.spinnerEl, 'height', this.computeSpinnerHeight() + 'px');
+        this.renderer.setStyle(this.spinnerEl, 'height', height + 'px');
       }
     } catch {}
   }
@@ -36,7 +46,7 @@ export class LibSpinnerDirective implements DoCheck {
     this.addKlasses(spinIcon, 'pi', 'pi-spin', 'pi-spinner');
 
     this.spinnerEl = this.renderer.createElement('span');
-    this.addKlasses(this.spinnerEl, 'sticky', 'w-full', 'bg-black/20', 'top-0', 'items-center', 'justify-center');
+    this.addKlasses(this.spinnerEl, 'absolute', 'w-full', 'bg-black/20', 'items-center', 'justify-center');
 
     this.renderer.setStyle(this.spinnerEl, 'height', this.computeSpinnerHeight() + 'px');
 
@@ -79,11 +89,13 @@ export class LibSpinnerDirective implements DoCheck {
   }
 
   private showLoading(): void {
+    this.addKlasses(this.elementRef.nativeElement, 'relative');
     this.removeKlasses(this.spinnerEl, 'hidden');
     this.addKlasses(this.spinnerEl, 'flex');
   }
 
   private hideLoading(): void {
+    this.removeKlasses(this.elementRef.nativeElement, 'relative');
     this.removeKlasses(this.spinnerEl, 'flex');
     this.addKlasses(this.spinnerEl, 'hidden');
   }
